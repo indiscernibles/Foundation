@@ -154,8 +154,8 @@ lemma transClosure_singleton : transClosure {x} = {x} ∪ transClosure x := by
     itersUnion_succ_eq (x := {x}) hnω ▸ (sUnion_singleton_eq x).symm ▸ rfl
   ext z
   constructor <;> intro hz
-  · obtain ⟨n, hnω, hzn⟩ := transClosure_spec.mp hz
-    rw [mem_union_iff, transClosure_spec]
+  · obtain ⟨n, hnω, hzn⟩ := mem_transClosure_iff.mp hz
+    rw [mem_union_iff, mem_transClosure_iff]
     by_cases hn : n = 0
     · simp only [hn, itersUnion.result_zero] at hzn
       exact .inl hzn
