@@ -67,6 +67,25 @@ lemma itersUnion_subset_of_isTransitive {n y : V} (hxy : x ⊆ y) (hy : IsTransi
   · obtain ⟨w, hw, hzw⟩ := mem_sUnion_iff.mp (itersUnion.result_succ ![x] hnω ▸ hz)
     exact hy.transitive w (ih w hw) z hzw
 
+/- Unfortunately this can't currently be stated for `NaturalNumberRec.Blueprint
+.result`s in
+general, since there is not a succinct way to start the construction at a diffe
+rent
+set like `⋃ˢ n` here. -/
+lemma itersUnion_succ_eq {n : V} (hnω : n ∈ (ω : V)) :
+    itersUnion.result ![x] (succ n) = itersUnion.result ![⋃ˢ x] n := by
+  refine naturalNumber_induction
+    (fun n ↦ itersUnion.result ![x] (succ n) = itersUnion.result ![⋃ˢ x] n) ?_
+      (by simp; rfl) (fun n hnω ih ↦ ?_) n hnω
+  · have : ℒₛₑₜ-function₁ itersUnion.result ![x] := by
+      refine ⟨⟨itersUnionBlueprint.resultDef.emb/[#0, #1, &x], ?_⟩⟩
+      intro v
+      simp [itersUnion.result_defined (V := V).iff ![v 0, v 1, x]]
+      simp [Matrix.vec_single_eq_const]
+    sorry
+  · rw [itersUnion.result_succ _ (ω_succ_closed hnω), ih, itersUnion.result_succ _ hnω]
+    rfl
+
 /-! ## Lemmas about transitive closure -/
 
 @[simp]
